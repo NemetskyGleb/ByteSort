@@ -41,22 +41,24 @@ void Swap(int &a, int &b){
 	a = b;
 	b = c;
 }
-void ByteSort(int *a, int n, int L, int R, int k){
-	if (L >= R || k < 0) return;
-	int i = L, j = R;
-	UI mask = 1;
-	mask <<= k;
-	do {
-		while (i <= j && (a[i] & mask))
-			i++;
-		while (i <= j && !(a[j] & mask))
-			j--;
-		if (i < j) {
-			Swap(a[i], a[j]);
-			i++;
-			j--;
+void ByteSort(int *a, int n, int l, int r, int k){
+	if ((l >= r) || (k < 0)) return;
+	else
+	{
+		int i = l;
+		int j = r;
+		int mask = 1;
+		mask <<= k;
+		while (i < j)
+		{
+			while ((i < j) && ((a[i] & mask) == 0))
+				i++;
+			while ((i < j) && ((a[j] & mask) != 0))
+				j--;
+			if (i < j) Swap(a[i], a[j]);
 		}
-	} while (i <= j);
-	ByteSort(a, n, L, j, k - 1);
-	ByteSort(a, n, i, R, k - 1);
+		if ((a[r] & mask) == 0) j++;
+		if (l < j) ByteSort(a, n, l, j - 1, k - 1);
+		if (i < r) ByteSort(a, n, i, r, k - 1);
+	}
 }
